@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "414801321795",
+    "project_id": "heyconvo-f0f0c",
+    "storage_bucket": "heyconvo-f0f0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414801321795:android:4d5f989a614dca05aa99f6",
+        "android_client_info": {
+          "package_name": "com.example.heyconvo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxA628-OhJAjsDlYC-2AjdsTOcCUCwY9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
