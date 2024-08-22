@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:heyconvo/models/chat_user.dart';
 import 'package:heyconvo/models/message.dart';
 
@@ -184,5 +185,23 @@ class APIs {
     });
     final imageUrl = await ref.getDownloadURL();
     await sendMessage(chatUser, imageUrl, Type.image);
+  }
+
+  static Future<void> deleteMessage(Message message) async {
+    await firestore
+        .collection('chats/${getConversionID(message.toId)}/messages')
+        .doc(message.sent)
+        .delete();
+
+    if (message.type == Type.image)
+      await storage.refFromURL(message.msg).delete();
+  }
+
+  //update or edit the message
+  static Future<void> editMessage(Message message, String updatedMsg) async {
+    await firestore
+        .collection('chats/${getConversionID(message.toId)}/messages')
+        .doc(message.sent)
+        .update({'msg': updatedMsg});
   }
 }
