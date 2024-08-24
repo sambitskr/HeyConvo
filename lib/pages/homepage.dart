@@ -66,8 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 27, 27, 27),
         appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 27, 27, 27),
           centerTitle: true,
           // leading: Image.asset(
           //   'images/HeyConvoIcon.png',
@@ -81,7 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   _isSearching = !_isSearching;
                 });
               },
-              icon: Icon(_isSearching ? Icons.clear_rounded : Icons.search),
+              icon: Icon(
+                _isSearching ? Icons.clear_rounded : Icons.search,
+                color: Colors.white,
+              ),
             ),
             IconButton(
               onPressed: () {
@@ -90,10 +94,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                         builder: (context) => ProfilePage(user: APIs.me)));
               },
-              icon: Icon(Icons.more_vert_rounded),
+              icon: Icon(
+                Icons.more_vert_rounded,
+                color: Colors.white,
+              ),
             )
           ],
-          elevation: 1,
+          elevation: 0,
           title: _isSearching
               ? TextField(
                   onChanged: (val) {
@@ -111,12 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   },
                   decoration: InputDecoration(
-                      border: InputBorder.none, hintText: 'Name, Email....'),
+                      border: InputBorder.none,
+                      hintText: 'Name, Email....',
+                      hintStyle: TextStyle(color: Colors.white)),
                   autofocus: true,
                 )
               : Text(
                   "Hey Convo",
-                  style: TextStyle(color: Colors.black, fontSize: 19),
+                  style: TextStyle(color: Colors.white, fontSize: 19),
                 ),
         ),
         body: GestureDetector(
@@ -157,7 +166,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             // return Text('Name: ${list[index]}');
                           });
                     } else {
-                      return Center(child: Text("no users found"));
+                      return Center(
+                          child: Text(
+                        "no users found",
+                        style: TextStyle(color: Colors.white),
+                      ));
                     }
                 }
               }),

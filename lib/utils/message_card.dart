@@ -44,11 +44,17 @@ class _MessageCardState extends State<MessageCard> {
                 horizontal: MediaQuery.of(context).size.width * .04,
                 vertical: MediaQuery.of(context).size.height * .01),
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * .04),
-            decoration: BoxDecoration(color: Colors.blue.shade200),
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 51, 51, 51),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
+                  bottomRight: Radius.circular(18),
+                )),
             child: widget.message.type == Type.text
                 ?
                 // show text
-                Text(widget.message.msg)
+                Text(widget.message.msg, style: TextStyle(color: Colors.white))
                 :
                 //show image
                 ClipRRect(
@@ -70,6 +76,7 @@ class _MessageCardState extends State<MessageCard> {
         Text(
           MyDateUtil.getFormattedTime(
               context: context, time: widget.message.sent),
+          style: TextStyle(color: Colors.white),
         )
       ],
     );
@@ -92,6 +99,7 @@ class _MessageCardState extends State<MessageCard> {
             Text(
               MyDateUtil.getFormattedTime(
                   context: context, time: widget.message.sent),
+              style: TextStyle(color: Colors.white),
             ),
           ],
         ),
@@ -101,7 +109,13 @@ class _MessageCardState extends State<MessageCard> {
                 horizontal: MediaQuery.of(context).size.width * .04,
                 vertical: MediaQuery.of(context).size.height * .01),
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * .04),
-            decoration: BoxDecoration(color: Colors.green.shade200),
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 192, 247, 166),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
+                  bottomLeft: Radius.circular(18),
+                )),
             child: widget.message.type == Type.text
                 ?
                 // show text
@@ -130,6 +144,7 @@ class _MessageCardState extends State<MessageCard> {
 
   void _showBottomSheet(bool isMe) {
     showModalBottomSheet(
+        backgroundColor: Color.fromARGB(255, 27, 27, 27),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
@@ -153,6 +168,7 @@ class _MessageCardState extends State<MessageCard> {
                   _OptionItem(
                       icon: Icon(
                         Icons.copy,
+                        color: Colors.white,
                         size: 26,
                       ),
                       name: 'Copy Text',
@@ -169,7 +185,8 @@ class _MessageCardState extends State<MessageCard> {
                   //Save Image
                   _OptionItem(
                       icon: Icon(
-                        Icons.copy,
+                        Icons.download,
+                        color: Colors.white,
                         size: 26,
                       ),
                       name: 'Save Image',
@@ -190,10 +207,12 @@ class _MessageCardState extends State<MessageCard> {
                       }),
 
               if (widget.message.type == Type.text && isMe)
+
                 //Edit Message
                 _OptionItem(
                     icon: Icon(
-                      Icons.copy,
+                      Icons.edit,
+                      color: Colors.white,
                       size: 26,
                     ),
                     name: 'Edit Message',
@@ -207,7 +226,8 @@ class _MessageCardState extends State<MessageCard> {
               if (isMe)
                 _OptionItem(
                     icon: Icon(
-                      Icons.copy,
+                      Icons.delete,
+                      color: Colors.white,
                       size: 26,
                     ),
                     name: 'Delete Message',
@@ -222,7 +242,8 @@ class _MessageCardState extends State<MessageCard> {
               //Sent At
               _OptionItem(
                   icon: Icon(
-                    Icons.copy,
+                    Icons.check,
+                    color: Colors.white,
                     size: 26,
                   ),
                   name:
@@ -232,7 +253,8 @@ class _MessageCardState extends State<MessageCard> {
               //Read At
               _OptionItem(
                   icon: Icon(
-                    Icons.copy,
+                    Icons.done_all,
+                    color: Colors.white,
                     size: 26,
                   ),
                   name: widget.message.read.isEmpty
@@ -303,7 +325,14 @@ class _OptionItem extends StatelessWidget {
             top: MediaQuery.of(context).size.height * .015,
             bottom: MediaQuery.of(context).size.height * 0.025),
         child: Row(
-          children: [icon, Flexible(child: Text('    $name'))],
+          children: [
+            icon,
+            Flexible(
+                child: Text(
+              '    $name',
+              style: TextStyle(color: Colors.white),
+            ))
+          ],
         ),
       ),
     );

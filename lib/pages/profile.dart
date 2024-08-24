@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:heyconvo/api/apis.dart';
@@ -90,27 +91,24 @@ class _ProfilePageState extends State<ProfilePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 27, 27, 27),
         appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 27, 27, 27),
           centerTitle: true,
-          // leading: Image.asset(
-          //   'images/HeyConvoIcon.png',
-          //   height: 10,
-          //   width: 10,
-          // ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.search),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.white,
             ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.more_vert_rounded),
-            )
-          ],
-          elevation: 1,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          automaticallyImplyLeading: false,
+          elevation: 0,
           title: Text(
-            "Hey Convo",
-            style: TextStyle(color: Colors.black, fontSize: 19),
+            "Your Profile",
+            style: TextStyle(color: Colors.white, fontSize: 19),
           ),
         ),
         body: Form(
@@ -163,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.white,
                           child: Icon(
                             Icons.edit,
-                            color: Colors.blue,
+                            color: Color.fromARGB(255, 27, 27, 27),
                           ),
                         ),
                       )
@@ -172,71 +170,160 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                  Text(
-                    widget.user.email,
-                    style: TextStyle(fontSize: 16),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: Colors.grey,
+                        size: 12.84,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text("Name",
+                          style: TextStyle(fontSize: 14, color: Colors.grey)),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 22, right: 18),
+                    child: TextFormField(
+                      initialValue: widget.user.name,
+                      style: TextStyle(color: Colors.white),
+                      onSaved: (val) => APIs.me.name = val ?? '',
+                      validator: (val) => val != null && val.isNotEmpty
+                          ? null
+                          : "Required Field",
+                      decoration: const InputDecoration(
+                        isDense: true,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.grey,
+                        size: 12,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text("About",
+                          style: TextStyle(fontSize: 14, color: Colors.grey)),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 22, right: 18),
+                    child: TextFormField(
+                      onSaved: (val) => APIs.me.about = val ?? '',
+                      validator: (val) => val != null && val.isNotEmpty
+                          ? null
+                          : "Required Field",
+                      initialValue: widget.user.about,
+                      style: TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        isDense: true,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                  TextFormField(
-                    initialValue: widget.user.name,
-                    onSaved: (val) => APIs.me.name = val ?? '',
-                    validator: (val) =>
-                        val != null && val.isNotEmpty ? null : "Required Field",
-                    decoration: InputDecoration(
-                        hintText: "Your Name",
-                        prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12))),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.email,
+                        color: Colors.grey,
+                        size: 12,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text("Email",
+                          style: TextStyle(fontSize: 14, color: Colors.grey)),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 22, right: 18),
+                    child: TextFormField(
+                      initialValue: widget.user.email,
+                      style: TextStyle(color: Colors.white),
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                  TextFormField(
-                    onSaved: (val) => APIs.me.about = val ?? '',
-                    validator: (val) =>
-                        val != null && val.isNotEmpty ? null : "Required Field",
-                    initialValue: widget.user.about,
-                    decoration: InputDecoration(
-                        hintText: "about",
-                        prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          APIs.updateUserInfo().then((value) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Profile updated')));
-                          });
-                          log("inside validator");
-                        }
-                      },
-                      child: Text('Update')),
-                  ElevatedButton(
-                      onPressed: () async {
-                        await APIs.updateActiveStatus(false);
-
-                        await APIs.auth.signOut().then((value) async {
-                          await GoogleSignIn().signOut().then((value) {
-                            Navigator.popUntil(
-                                context, (route) => route.isFirst);
-
-                            APIs.auth = FirebaseAuth.instance;
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignupPage()));
-                          });
+                  GestureDetector(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        APIs.updateUserInfo().then((value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Profile updated')));
                         });
-                      },
-                      child: Text('Logout'))
+                        log("inside validator");
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 51, 51, 51),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Update',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await APIs.updateActiveStatus(false);
+
+                      await APIs.auth.signOut().then((value) async {
+                        await GoogleSignIn().signOut().then((value) {
+                          Navigator.popUntil(context, (route) => route.isFirst);
+
+                          APIs.auth = FirebaseAuth.instance;
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignupPage()));
+                        });
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 51, 51, 51),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

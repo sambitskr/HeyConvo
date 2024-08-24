@@ -25,18 +25,23 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 27, 27, 27),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Color.fromARGB(255, 27, 27, 27),
           centerTitle: true,
-          // leading: Image.asset(
-          //   'images/HeyConvoIcon.png',
-          //   height: 10,
-          //   width: 10,
-          // ),
-
-          elevation: 1,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.white,
+              )),
+          elevation: 0,
           title: Text(
             widget.user.name,
-            style: TextStyle(color: Colors.black, fontSize: 19),
+            style: TextStyle(color: Colors.white, fontSize: 19),
           ),
         ),
         body: Padding(
@@ -63,25 +68,90 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Text(
-                  widget.user.email,
-                  style: TextStyle(color: Colors.black87, fontSize: 16),
+                  height: MediaQuery.of(context).size.height * .03,
+                  width: MediaQuery.of(context).size.width,
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-                Text(
-                  widget.user.name,
-                  style: TextStyle(color: Colors.black87, fontSize: 16),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: Colors.grey,
+                      size: 12.84,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text("Name",
+                        style: TextStyle(fontSize: 14, color: Colors.grey)),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 22, right: 18),
+                  child: TextFormField(
+                    initialValue: widget.user.name,
+                    style: TextStyle(color: Colors.white),
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      isDense: true,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.grey,
+                      size: 12,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text("About",
+                        style: TextStyle(fontSize: 14, color: Colors.grey)),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 22, right: 18),
+                  child: TextFormField(
+                    readOnly: true,
+                    initialValue: widget.user.about,
+                    style: TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      isDense: true,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-                Text(
-                  widget.user.about,
-                  style: TextStyle(color: Colors.black87, fontSize: 16),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.email,
+                      color: Colors.grey,
+                      size: 12,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text("Email",
+                        style: TextStyle(fontSize: 14, color: Colors.grey)),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 22, right: 18),
+                  child: TextFormField(
+                    initialValue: widget.user.email,
+                    style: TextStyle(color: Colors.white),
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      isDense: true,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
