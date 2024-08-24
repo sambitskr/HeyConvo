@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:heyconvo/models/chat_user.dart';
 import 'package:heyconvo/models/message.dart';
+import 'package:heyconvo/pages/homepage.dart';
 
 class APIs {
   // for authentication
@@ -33,11 +34,30 @@ class APIs {
         .exists;
   }
 
+  //Login with email
+  static Future<void> login(String mail, String passwordd) async {
+    String email = mail;
+    String password = passwordd;
+
+    if (email == "" || password == "") {
+      log("Please fill in all the details");
+    } else {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        if (userCredential.user != null) {}
+        log("Logged in successfully");
+      } on FirebaseAuthException catch (ex) {
+        log(ex.code.toString());
+      }
+    }
+  }
+
   //for getting current user info
   static Future<void> getSelfInfo() async {
     return (await firestore
         .collection('users')
-        .doc(auth.currentUser!.uid)
+        .doc(auth.currentUser?.uid)
         .get()
         .then((user) {
       if (user.exists) {
@@ -46,6 +66,42 @@ class APIs {
         googleCreateUser().then((value) => getSelfInfo());
       }
     }));
+  }
+
+  void checkSignInProvider() {
+    // Get the currently signed-in user
+    User? userr = FirebaseAuth.instance.currentUser;
+
+    // Check if a user is signed in
+    if (userr != null) {
+      // Iterate through the user's provider data
+      for (UserInfo userInfo in user.providerData) {
+        String providerId = userInfo.providerId;
+
+        // Determine the provider based on the providerId
+        switch (providerId) {
+          case 'google.com':
+            print('User signed in with Google');
+            break;
+          case 'facebook.com':
+            print('User signed in with Facebook');
+            break;
+          case 'apple.com':
+            print('User signed in with Apple');
+            break;
+          case 'password':
+            print('User signed in with Email and Password');
+            break;
+          case 'phone':
+            print('User signed in with Phone');
+            break;
+          default:
+            print('User signed in with other provider: $providerId');
+        }
+      }
+    } else {
+      print('No user is currently signed in.');
+    }
   }
 
   //for getting specific user info
@@ -84,6 +140,47 @@ class APIs {
         .collection('users')
         .doc(user.uid)
         .set(chatUser.toJson());
+  }
+
+  // email and password signin
+  static Future<void> createAccount(
+      String mail, String passwordd, String nam) async {
+    String email = mail;
+    String password = passwordd;
+    String name = nam;
+
+    if (email == "" || password == "" || name == "") {
+      log("Please fill in all the details");
+    } else {
+      UserCredential? userCredential;
+
+      try {
+        userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        log("createUserWithEmailAndPassword");
+
+        final time = DateTime.now().millisecondsSinceEpoch.toString();
+
+        final chatUser = ChatUser(
+          image: "",
+          name: name,
+          about: "Hey, I am using HeyConvo",
+          createdAt: time,
+          isOnline: false,
+          id: user.uid,
+          lastActive: time,
+          pushToken: "",
+          email: email,
+        );
+
+        return await firestore
+            .collection('users')
+            .doc(user.uid)
+            .set(chatUser.toJson());
+      } on FirebaseAuthException catch (ex) {
+        log(ex.code.toString());
+      }
+    }
   }
 
 // to get all the users from firestore

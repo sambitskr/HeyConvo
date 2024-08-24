@@ -16,31 +16,36 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void createAccount() async {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
+  // void createAccount() async {
+  //   String email = emailController.text.trim();
+  //   String password = passwordController.text.trim();
 
-    if (email == "" || password == "") {
-      log("Please fill in all the details");
-    } else {
-      log("Signup successful");
+  //   if (email == "" || password == "") {
+  //     log("Please fill in all the details");
+  //   } else {
+  //     log("Signup successful");
 
-      UserCredential? userCredential;
+  //     UserCredential? userCredential;
 
-      try {
-        userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-      } on FirebaseAuthException catch (ex) {
-        log(ex.code.toString());
-      }
+  //     try {
+  //       userCredential = await FirebaseAuth.instance
+  //           .createUserWithEmailAndPassword(email: email, password: password);
 
-      if (userCredential != null) {
-        String uid = userCredential.user!.uid;
-      }
-    }
-  }
+  //       if (userCredential != null) {
+  //         String uid = userCredential.user!.uid;
+  //       }
+  //     } on FirebaseAuthException catch (ex) {
+  //       log(ex.code.toString());
+  //     }
+
+  //     if (userCredential != null) {
+  //       String uid = userCredential.user!.uid;
+  //     }
+  //   }
+  // }
 
   Future<void> googleSignIn() async {
     try {
@@ -96,6 +101,12 @@ class _SignupPageState extends State<SignupPage> {
                 children: [Text("Sign up or sign in to access your chats")],
               ),
               Row(
+                children: [Text("Name")],
+              ),
+              TextField(
+                controller: nameController,
+              ),
+              Row(
                 children: [Text("Email")],
               ),
               TextField(
@@ -108,7 +119,16 @@ class _SignupPageState extends State<SignupPage> {
                 obscureText: true,
                 controller: passwordController,
               ),
-              ElevatedButton(onPressed: createAccount, child: Text('Sign up')),
+              ElevatedButton(
+                  onPressed: () async {
+                    await APIs.createAccount(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                        nameController.text.trim());
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  },
+                  child: Text('Sign up')),
               ElevatedButton(
                   onPressed: googleSignIn, child: Text('Sign up with google')),
               Row(

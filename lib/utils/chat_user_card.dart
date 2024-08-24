@@ -54,8 +54,12 @@ class _ChatUserCardState extends State<ChatUserCard> {
                     // ),
                     ClipRRect(
                   borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.height * .3),
+                    MediaQuery.of(context).size.height * .3,
+                  ),
                   child: CachedNetworkImage(
+                    height: MediaQuery.of(context).size.height * .055,
+                    width: MediaQuery.of(context).size.height * .055,
+                    fit: BoxFit.cover,
                     imageUrl: widget.user.image,
                     placeholder: (context, url) => CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Icon(Icons.error),

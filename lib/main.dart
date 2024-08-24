@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:heyconvo/authentication/login.dart';
@@ -11,9 +12,18 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  User? currentuser = FirebaseAuth.instance.currentUser;
+
+  if (currentuser != null) {
+    //logged in
+    runApp(MyAppLoggedIn());
+  } else {
+    // not logged in
+    runApp(const MyApp());
+  }
 }
 
+//Not Logged in
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,6 +33,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'HeyConvo',
+      home: const LoginPage(),
+    );
+  }
+}
+
+//Logged in
+class MyAppLoggedIn extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: const MyHomePage(),
     );
   }
