@@ -23,7 +23,6 @@ class _ChatUserCardState extends State<ChatUserCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Color.fromARGB(255, 27, 27, 27),
       margin: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * .04, vertical: 04),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -69,7 +68,7 @@ class _ChatUserCardState extends State<ChatUserCard> {
                 //username
                 title: Text(
                   widget.user.name,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(),
                 ),
 
                 //last message
@@ -102,7 +101,7 @@ class _ChatUserCardState extends State<ChatUserCard> {
                         : Text(
                             MyDateUtil.getLastMessageTime(
                                 context: context, time: _message!.sent),
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(),
                           ),
                 // trailing: Text("12:00 PM"),
               );

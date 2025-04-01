@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:heyconvo/authentication/login.dart';
 import 'package:heyconvo/authentication/signup.dart';
 import 'package:heyconvo/firebase_options.dart';
+import 'package:heyconvo/pages/HomeScreen.dart';
+
 import 'package:heyconvo/pages/homepage.dart';
 
 void main() async {
@@ -45,7 +47,7 @@ class MyAppLoggedIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home: HomeScreen(),
     );
   }
 }

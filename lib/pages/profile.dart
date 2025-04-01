@@ -34,18 +34,37 @@ class _ProfilePageState extends State<ProfilePage> {
           return ListView(
             shrinkWrap: true,
             padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.03,
+                // top: MediaQuery.of(context).size.height * 0.03,
                 bottom: MediaQuery.of(context).size.height * 0.05),
             children: [
-              Text(
-                "Pick profile picture",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
+              Container(
+                height: 4,
+                margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.015,
+                    horizontal: MediaQuery.of(context).size.width * .4),
+                decoration: BoxDecoration(
+                    color: Colors.grey, borderRadius: BorderRadius.circular(8)),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.close)),
+                  Text(
+                    "Profile picture",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.delete_rounded))
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
+                IconButton(
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
                         // Pick an image.
@@ -62,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
                       },
                       icon: Icon(Icons.photo_size_select_actual_rounded)),
-                  IconButton(
+                 IconButton(
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
                         // Pick an image.
@@ -91,14 +110,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 27, 27, 27),
+        // backgroundColor: Color.fromARGB(255, 27, 27, 27),
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 27, 27, 27),
+          // backgroundColor: Color.fromARGB(255, 27, 27, 27),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios_rounded,
-              color: Colors.white,
+              // color: Colors.white,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -108,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
           elevation: 0,
           title: Text(
             "Your Profile",
-            style: TextStyle(color: Colors.white, fontSize: 19),
+            style: TextStyle(fontSize: 19),
           ),
         ),
         body: Form(
@@ -188,7 +207,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.only(left: 22, right: 18),
                     child: TextFormField(
                       initialValue: widget.user.name,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          // color: Colors.white,
+                          ),
                       onSaved: (val) => APIs.me.name = val ?? '',
                       validator: (val) => val != null && val.isNotEmpty
                           ? null
@@ -221,7 +242,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           ? null
                           : "Required Field",
                       initialValue: widget.user.about,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          // color: Colors.white,
+                          ),
                       decoration: const InputDecoration(
                         isDense: true,
                       ),
@@ -248,7 +271,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.only(left: 22, right: 18),
                     child: TextFormField(
                       initialValue: widget.user.email,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          // color: Colors.white,
+                          ),
                       readOnly: true,
                       decoration: const InputDecoration(
                         isDense: true,

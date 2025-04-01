@@ -25,10 +25,10 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 27, 27, 27),
+        // backgroundColor: Color.fromARGB(255, 27, 27, 27),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color.fromARGB(255, 27, 27, 27),
+          // backgroundColor: Color.fromARGB(255, 27, 27, 27),
           centerTitle: true,
           leading: IconButton(
               onPressed: () {
@@ -36,12 +36,12 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
               },
               icon: Icon(
                 Icons.arrow_back_ios_rounded,
-                color: Colors.white,
+                // color: Colors.white,
               )),
           elevation: 0,
           title: Text(
             widget.user.name,
-            style: TextStyle(color: Colors.white, fontSize: 19),
+            style: TextStyle(fontSize: 19),
           ),
         ),
         body: Padding(
@@ -92,7 +92,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                   padding: const EdgeInsets.only(left: 22, right: 18),
                   child: TextFormField(
                     initialValue: widget.user.name,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(),
                     readOnly: true,
                     decoration: const InputDecoration(
                       isDense: true,
@@ -119,7 +119,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                   child: TextFormField(
                     readOnly: true,
                     initialValue: widget.user.about,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(),
                     decoration: const InputDecoration(
                       isDense: true,
                     ),
@@ -146,7 +146,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                   padding: const EdgeInsets.only(left: 22, right: 18),
                   child: TextFormField(
                     initialValue: widget.user.email,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(),
                     readOnly: true,
                     decoration: const InputDecoration(
                       isDense: true,

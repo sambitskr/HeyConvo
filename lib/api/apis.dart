@@ -34,6 +34,29 @@ class APIs {
         .exists;
   }
 
+  // for adding a chat user for our conversation
+  static Future<bool> addChatUser(String email) async {
+    final data = await firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (data.docs.isNotEmpty && data.docs.first != user.uid) {
+      //users exists
+      firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('my_users')
+          .doc(data.docs.first.id)
+          .set({});
+
+      return true;
+    } else {
+      //users doesnt exists
+      return false;
+    }
+  }
+
   //Login with email
   static Future<void> login(String mail, String passwordd) async {
     String email = mail;
@@ -184,10 +207,25 @@ class APIs {
   }
 
 // to get all the users from firestore
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers(
+      List<String> userIds) {
+    if (userIds.isEmpty) {
+      // Return an empty stream or handle it appropriately
+      return Stream.empty();
+    }
+
     return firestore
         .collection('users')
-        .where('id', isNotEqualTo: user.uid)
+        .where('id', whereIn: userIds)
+        .snapshots();
+  }
+
+// for getting Id's of known users from firestore database
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getMyUsersId() {
+    return firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('my_users')
         .snapshots();
   }
 
@@ -197,6 +235,17 @@ class APIs {
         .collection('users')
         .doc(auth.currentUser!.uid)
         .update({"name": me.name, "about": me.about});
+  }
+
+  //for adding a new user in my user when a user is added
+  static Future<void> sendFirstMessage(
+      ChatUser chatUser, String msg, Type type) async {
+    await firestore
+        .collection('users')
+        .doc(chatUser.id)
+        .collection('my_users')
+        .doc(user.uid)
+        .set({}).then((value) => sendMessage(chatUser, msg, type));
   }
 
   //update a profile picture of user
@@ -269,9 +318,9 @@ class APIs {
         .limit(1)
         .snapshots();
   }
-
+// Sending Images through Chat
   static Future<void> sendChatImage(ChatUser chatUser, File file) async {
-    final ext = file.path.split('.').last;
+    final ext = file.path.split('.').last; //This extracts the file extension (e.g., jpg, png) from the file path.
 
     final ref = storage.ref().child(
         'images/${getConversionID(chatUser.id)}/${DateTime.now().millisecondsSinceEpoch}.$ext');

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver_updated/gallery_saver.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:heyconvo/api/apis.dart';
 import 'package:heyconvo/models/message.dart';
 import 'package:heyconvo/utils/my_date_util.dart';
@@ -45,7 +46,7 @@ class _MessageCardState extends State<MessageCard> {
                 vertical: MediaQuery.of(context).size.height * .01),
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * .04),
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 51, 51, 51),
+                color: Color.fromARGB(255, 220, 220, 220),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(18),
                   topRight: Radius.circular(18),
@@ -54,7 +55,10 @@ class _MessageCardState extends State<MessageCard> {
             child: widget.message.type == Type.text
                 ?
                 // show text
-                Text(widget.message.msg, style: TextStyle(color: Colors.white))
+                Text(
+                    widget.message.msg,
+                    style: GoogleFonts.hedvigLettersSans(),
+                  )
                 :
                 //show image
                 ClipRRect(
@@ -73,10 +77,17 @@ class _MessageCardState extends State<MessageCard> {
                   ),
           ),
         ),
-        Text(
-          MyDateUtil.getFormattedTime(
-              context: context, time: widget.message.sent),
-          style: TextStyle(color: Colors.white),
+        Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * .04,
+              vertical: MediaQuery.of(context).size.height * .01),
+          child: Text(
+            MyDateUtil.getFormattedTime(
+                context: context, time: widget.message.sent),
+            style: GoogleFonts.hedvigLettersSans(
+              textStyle: TextStyle(color: Colors.black),
+            ),
+          ),
         )
       ],
     );
@@ -89,6 +100,10 @@ class _MessageCardState extends State<MessageCard> {
       children: [
         Row(
           children: [
+            //space
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .04,
+            ),
             //double tick blue icon for message read
             if (widget.message.read.isNotEmpty)
               Icon(
@@ -96,10 +111,17 @@ class _MessageCardState extends State<MessageCard> {
                 color: Colors.blue,
                 size: 20,
               ),
+
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .02,
+            ),
+
             Text(
               MyDateUtil.getFormattedTime(
                   context: context, time: widget.message.sent),
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.hedvigLettersSans(
+                textStyle: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         ),
@@ -119,7 +141,10 @@ class _MessageCardState extends State<MessageCard> {
             child: widget.message.type == Type.text
                 ?
                 // show text
-                Text(widget.message.msg)
+                Text(
+                    widget.message.msg,
+                    style: GoogleFonts.hedvigLettersSans(),
+                  )
                 :
                 //show image
                 ClipRRect(
